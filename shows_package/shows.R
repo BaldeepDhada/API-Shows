@@ -146,7 +146,8 @@ main <- function(){
       if (season_number_input == "0") {
         break
       }
-      season_id <- seasons$id[season_number_input]
+      
+      season_id <- trimws(seasons$id[season_number_input])
       episodes <- get_episodes_of_season(season_id)
     
       episode_details <- format_episode_name(episodes)
