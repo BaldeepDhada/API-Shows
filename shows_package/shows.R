@@ -5,6 +5,14 @@ library(roxygen2)
 
 BASE_URL = "https://api.tvmaze.com/"
 
+#' get_shows
+#'
+#' @param query 
+#'
+#' @return a dataframe containing all information on a given television show
+#' @export
+#'
+#' @examples get_shows("Hello Kitty")
 get_shows <- function(query){
   query = paste0(BASE_URL, "search/shows?q=", URLencode(query))
   response = GET(query)
@@ -13,6 +21,15 @@ get_shows <- function(query){
   ifelse(length(parse_json) == 0, return (NULL), return (parse_json))
 }
 
+#' format_show_name
+#'
+#' @param show 
+#'
+#' @return a dataframe of the shows returned in the get_shows() function, along 
+#' with premier date, end date, and the genres
+#' @export
+#'
+#' @examples format_show_name(get_shows("Hello Kitty"))
 format_show_name <- function(show){
   
   genres = character()
