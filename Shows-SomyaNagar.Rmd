@@ -1,0 +1,14 @@
+---
+title: "Somya Nagar"
+author: "Somya Nagar"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Work Log
+
+## Jan 23, 2024
