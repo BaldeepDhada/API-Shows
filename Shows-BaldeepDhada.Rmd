@@ -7,3 +7,7 @@ date: "2024-01-24"
 # Jan 24, 2024:
 
 Created the get_seasons(), format_season_name() functions, and updated the main function to handle a show input that doesn't exist in the API. Instead of printing the results as they are, I decided to print the results as a data frame and requested my team members to also make any future results as a data frame. 
+
+# Jan 25, 2024:
+
+Made an update to format_season_name to handle empty strings and replace it with ?. Updated the main function to make the output more clean
