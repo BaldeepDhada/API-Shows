@@ -53,6 +53,7 @@ get_seasons <- function(show_id){
   response <- GET(link)
   json_content <- content(response, "text", encoding = "UTF-8")
   parsed_json <- fromJSON(json_content)
+  parsed_json <- data.frame(apply(parsed_json, c(1, 2), function(x) ifelse(is.na(x) | x == " ", "?", x)))
   return(parsed_json)
   
 }
@@ -98,33 +99,45 @@ replace_na <- function(x) {
   return(x)
 }
 main <- function(){
-  query <- readline("Search for a Show: ")
-  results <- get_shows(query)
-  
-  if(is.null(results)) {
-    cat("No results found")
-  } else {
-    cat("Here are the results:\n")
-    details <- format_show_name(results)
-    print(details)
+  exit <- FALSE
+  while (exit == FALSE) {
+    query <- readline("Enter a Show (or 0 to exit): ")
+    if (query == "0") {
+      break
+    }
+    results <- get_shows(query)
     
-    seasons_input <- readline("Select a Show: ")
-    index_seasons <- as.numeric(seasons_input)
-    season_id <- results$id[index_seasons]
+    if(is.null(results)) {
+      cat("No results found")
+    } else {
+      cat("Here are the results:\n")
+      details <- format_show_name(results)
+      print(details)
+      
+      seasons_input <- readline("Select a Show number (or 0 to exit): ")
+      if (seasons_input == "0") {
+        break
+      }
+      index_seasons <- as.numeric(seasons_input)
+      season_id <- results$id[index_seasons]
+      
+      seasons <- get_seasons(season_id)
+      season_names <- format_season_name(seasons)
+      print(season_names)
+      
+      season_number_input <- as.numeric(readline("Select a Show number (or 0 to exit): "))
+      if (season_number_input == "0") {
+        break
+      }
+      season_id <- seasons$id[season_number_input]
+      episodes <- get_episodes_of_season(season_id)
     
-    seasons <- get_seasons(season_id)
-    season_names <- format_season_name(seasons)
-    print(season_names)
-    
-    season_number_input <- as.numeric(readline("Select a Season: "))
-    season_id <- seasons$id[season_number_input]
-    episodes <- get_episodes_of_season(season_id)
-  
-    episode_details <- format_episode_name(episodes)
-    new_col_names <- c("Episode", "Name", "Rating")
-    
-    colnames(episode_details) <- new_col_names
-    print(episode_details)
+      episode_details <- format_episode_name(episodes)
+      new_col_names <- c("Episode", "Name", "Rating")
+      
+      colnames(episode_details) <- new_col_names
+      print(episode_details)
+    }
   }
 }
 
