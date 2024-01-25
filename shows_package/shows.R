@@ -76,6 +76,27 @@ format_season_name <- function(season){
   return(formatted_seasons)
 }
 
+get_episodes_of_season <- function(season_id) {
+  link <- paste0(BASE_URL, "seasons/", as.character(season_id), "/episodes")
+  response <- GET(link)
+  json_content <- content(response, "text", encoding = "UTF-8")
+  parsed_json <- fromJSON(json_content)
+  return(parsed_json)
+}
+
+format_episode_name <- function(episode) {
+  number <- lapply(episode$number, replace_na)
+  rating <- lapply(episode$rating, replace_na)
+  
+  ep_number <- paste0("S", episode$season, "E", number)
+  df <- data.frame('Episode' = ep_number, 'Name' = episode$name, 'Rating' = rating)
+  return(df)
+}
+
+replace_na <- function(x) {
+  x[is.na(x)] <- "?"
+  return(x)
+}
 main <- function(){
   query <- readline("Search for a Show: ")
   results <- get_shows(query)
@@ -83,7 +104,7 @@ main <- function(){
   if(is.null(results)) {
     cat("No results found")
   } else {
-    cat("Here are the results:")
+    cat("Here are the results:\n")
     details <- format_show_name(results)
     print(details)
     
@@ -94,6 +115,16 @@ main <- function(){
     seasons <- get_seasons(season_id)
     season_names <- format_season_name(seasons)
     print(season_names)
+    
+    season_number_input <- as.numeric(readline("Select a Season: "))
+    season_id <- seasons$id[season_number_input]
+    episodes <- get_episodes_of_season(season_id)
+  
+    episode_details <- format_episode_name(episodes)
+    new_col_names <- c("Episode", "Name", "Rating")
+    
+    colnames(episode_details) <- new_col_names
+    print(episode_details)
   }
 }
 
