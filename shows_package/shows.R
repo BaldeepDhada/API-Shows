@@ -104,7 +104,7 @@ main <- function(){
   if(is.null(results)) {
     cat("No results found")
   } else {
-    cat("Here are the results:")
+    cat("Here are the results:\n")
     details <- format_show_name(results)
     print(details)
     
