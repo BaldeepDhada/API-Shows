@@ -10,4 +10,4 @@ Created the get_seasons(), format_season_name() functions, and updated the main 
 
 # Jan 25, 2024:
 
-Made an update to format_season_name to handle empty strings and replace it with ?. Updated the main function to make the output more clean. Added a while loop so the user can keep using the program, added breaks within it to exit the program at any level. added documentation for format_season_name and get_seasons. 
+Made an update to format_season_name to handle empty strings and replace it with ?. Updated the main function to make the output more clean. Added a while loop so the user can keep using the program, added breaks within it to exit the program at any level. Added documentation for format_season_name and get_seasons. 

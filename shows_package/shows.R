@@ -90,7 +90,7 @@ format_season_name <- function(season){
                                   End = glue("{substr(season$endDate, 1, 4)}"), Episodes = season$episodeOrder)
   
   # replacing NA values with ? to account for missing information in the API
-  formatted_seasons[is.na(formatted_seasons)] <- "?"
+  formatted_seasons[is.na(formatted_seasons) | formatted_seasons == ""] <- "?"
   return(formatted_seasons)
 }
 
@@ -131,18 +131,19 @@ main <- function(){
       details <- format_show_name(results)
       print(details)
       
-      seasons_input <- readline("Select a Show number (or 0 to exit): ")
+      seasons_input <- readline("Select a Show Number (or 0 to exit): ")
       if (seasons_input == "0") {
         break
       }
       index_seasons <- as.numeric(seasons_input)
       season_id <- results$id[index_seasons]
+      season_id <- trimws(season_id)
       
       seasons <- get_seasons(season_id)
       season_names <- format_season_name(seasons)
       print(season_names)
       
-      season_number_input <- as.numeric(readline("Select a Show number (or 0 to exit): "))
+      season_number_input <- as.numeric(readline("Select a Season Number (or 0 to exit): "))
       if (season_number_input == "0") {
         break
       }
