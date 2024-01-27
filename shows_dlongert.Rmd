@@ -1,2 +1,3 @@
 - January 23, 2024: I created a branch off the main API repo branch to work off of
 - January 24, 2024: I created a get_shows(), format_show_name(), and main() functions
+- January 25, 2-24: I created documentation using Roxygen2 the the functions I created above; I combined my functions above with the functions my other teammates made
