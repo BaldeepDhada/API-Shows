@@ -15,6 +15,7 @@ BASE_URL = "https://api.tvmaze.com/"
 #' @examples get_shows("Hello Kitty")
 get_shows <- function(query){
   query = paste0(BASE_URL, "search/shows?q=", URLencode(query))
+  print(query)
   response = GET(query)
   json_content = content(response, "text", encoding = "UTF-8")
   parse_json = fromJSON(json_content)$show
@@ -115,6 +116,24 @@ replace_na <- function(x) {
   x[is.na(x)] <- "?"
   return(x)
 }
+
+get_all_episodes <- function(show_id) {
+  link <- paste0(BASE_URL, "shows/", as.character(show_id), "/episodes")
+  response <- GET(link)
+  json_content <- content(response, "text", encoding = "UTF-8")
+  parsed_json <- fromJSON(json_content)
+  return(parsed_json)
+}
+
+format_all_episodes <- function(all_episodes) {
+  number <- lapply(all_episodes$number, replace_na)
+  rating <- lapply(all_episodes$rating, replace_na)
+  
+  ep_number <- paste0("S", all_episodes$season, "E", number)
+  df <- data.frame('Episode' = ep_number, 'Name' = all_episodes$name, 'Rating' = rating)
+  return(df)
+}
+
 main <- function(){
   exit <- FALSE
   while (exit == FALSE) {
@@ -136,26 +155,30 @@ main <- function(){
         break
       }
       index_seasons <- as.numeric(seasons_input)
-      season_id <- results$id[index_seasons]
-      season_id <- trimws(season_id)
+      seasons_id <- results$id[index_seasons]
+      seasons_id <- trimws(seasons_id)
       
-      seasons <- get_seasons(season_id)
-      season_names <- format_season_name(seasons)
-      print(season_names)
+      #seasons <- get_seasons(seasons_id)
+      #season_names <- format_season_name(seasons)
+      #print(season_names)
       
-      season_number_input <- as.numeric(readline("Select a Season Number (or 0 to exit): "))
-      if (season_number_input == "0") {
-        break
-      }
+      #season_number_input <- as.numeric(readline("Select a Season Number (or 0 to exit): "))
+      #if (season_number_input == "0") {
+        #break
+      #}
       
-      season_id <- trimws(seasons$id[season_number_input])
-      episodes <- get_episodes_of_season(season_id)
+      #season_id <- trimws(seasons$id[season_number_input])
+      #episodes <- get_episodes_of_season(season_id)
     
-      episode_details <- format_episode_name(episodes)
-      new_col_names <- c("Episode", "Name", "Rating")
+      #episode_details <- format_episode_name(episodes)
+      #new_col_names <- c("Episode", "Name", "Rating")
       
-      colnames(episode_details) <- new_col_names
-      print(episode_details)
+      #colnames(episode_details) <- new_col_names
+      #print(episode_details)
+      
+      all_episodes <- get_all_episodes(seasons_id)
+      all_episodes_df <- format_all_episodes(all_episodes)
+      print(all_episodes_df)
     }
   }
 }
