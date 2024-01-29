@@ -207,7 +207,8 @@ main <- function(){
       episode_details <- format_episode_name(episodes)
       print(episode_details)
       
-      average_seasons_ratings <- readline("Do you want to see any of the 2 visualizations? (or 0 to exit):\n 1. Plot of average rating per season for all the seasons in a show \n2. Plot of ratings for each episodes in a season")
+      cat("\n1. Plot of average rating per season for all the seasons in a show \n2. Plot of ratings for each episodes in a season")
+      average_seasons_ratings <- readline("Do you want to see any of the 2 visualizations? (or 0 to exit): ")
       average_seasons_ratings
       if (average_seasons_ratings == "0") {
         break
@@ -218,7 +219,7 @@ main <- function(){
         print(plot)
         
       } else if (average_seasons_ratings == "2") {
-        season_rating_input <- as.numeric(readline("Which season do you want to visualize?"))
+        season_rating_input <- as.numeric(readline("Which season do you want to visualize? "))
         season_rating_id <- trimws(seasons$id[season_rating_input])
         episodes_rating <- get_episodes_of_season(season_rating_id)
         episode_details <- format_episode_name(episodes_rating)
