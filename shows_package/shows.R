@@ -109,8 +109,13 @@ get_episodes_of_season <- function(season_id) {
   link <- paste0(BASE_URL, "seasons/", as.character(season_id), "/episodes")
   response <- GET(link)
   json_content <- content(response, "text", encoding = "UTF-8")
-  parsed_json <- fromJSON(json_content)
-  return(parsed_json)
+  
+  if (json_content == "[]") {
+    return("There is no information for this season")
+  } else {
+    parsed_json <- fromJSON(json_content)
+    return(parsed_json)
+  }
 }
 
 #' format_episode_name
@@ -262,9 +267,13 @@ main <- function(){
       
       season_id <- trimws(seasons$id[season_number_input])
       episodes <- get_episodes_of_season(season_id)
-    
-      episode_details <- format_episode_name(episodes)
-      print(episode_details)
+      
+      if (is.character(episodes)) { # if there is no information about the season
+        cat(episodes, "\n")
+      } else { # if a data frame is returned from the get_episodes_of_season function
+        episode_details <- format_episode_name(episodes)
+        print(episode_details)
+      }
       
       # generating plots
       cat("\n1. Plot of average rating per season for all the seasons in a show \n2. Plot of ratings for each episodes in a season")
