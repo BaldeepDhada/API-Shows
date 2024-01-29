@@ -294,10 +294,14 @@ main <- function(){
         season_rating_input <- as.numeric(readline("Which season do you want to visualize? "))
         season_rating_id <- trimws(seasons$id[season_rating_input])
         episodes_rating <- get_episodes_of_season(season_rating_id)
-        episode_details <- format_episode_name(episodes_rating)
-        episode_details$Episode <- as.numeric(str_replace(episode_details$Episode, ".*E", ""))
-        season_plot <- generate_season_ratings_plot(episode_details)
-        print(season_plot)
+        if (is.character(episodes_rating)) {
+          cat(episodes_rating)
+        } else {
+          episode_details <- format_episode_name(episodes_rating)
+          episode_details$Episode <- as.numeric(str_replace(episode_details$Episode, ".*E", ""))
+          season_plot <- generate_season_ratings_plot(episode_details)
+          print(season_plot)
+        }
       }
     }
   }
