@@ -145,15 +145,14 @@ format_all_episodes <- function(all_episodes) {
 }
 
 generate_ratings_plot <- function(all_episodes_df) {
+  all_episodes_df$Rating <- as.numeric(all_episodes_df$Rating)
+  all_episodes_df$Season <- as.numeric(gsub("^S(\\d+)E.*", "\\1", all_episodes_df$Episode))
+  season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
+  colnames(season_avg) <- c("Season", "Mean_Rating")
+  base <- ggplot(season_avg, aes(x = Season, y = Mean_Rating))
+  plot <- base + geom_point() + geom_line() + labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Average Ratings by Season")
   
-  episodes_plot <- ggplot(all_episodes_df, aes(x = Episode, y = Rating, group = substring(Episode, 2, 2))) +
-    geom_line(aes(color = substring(Episode, 2, 2))) +
-    geom_point(aes(color = substring(Episode, 2, 2))) +
-    labs(title = "Season Ratings",
-         x = "All Episodes",
-         y = "Rating")
-  
-  return(episodes_plot)
+  return(plot)
 }
 
 generate_season_ratings_plot <- function(season_df) {
@@ -208,24 +207,22 @@ main <- function(){
       episode_details <- format_episode_name(episodes)
       print(episode_details)
       
-      all_episodes <- get_all_episodes(seasons_id)
-      all_episodes_df <- format_all_episodes(all_episodes)
-      
-      episodes_plot <- generate_ratings_plot(all_episodes_df)
-      
       average_seasons_ratings <- readline("Do you want to see any of the 2 visualizations? (or 0 to exit):\n 1. Plot of average rating per season for all the seasons in a show \n2. Plot of ratings for each episodes in a season")
       average_seasons_ratings
       if (average_seasons_ratings == "0") {
         break
       } else if (average_seasons_ratings == "1") {
-        all_ratings_plot <- generate_ratings_plot(all_episodes_df)
-        print(all_ratings_plot)
+        all_episodes <- get_all_episodes(seasons_id)
+        all_episodes_df <- format_all_episodes(all_episodes)
+        plot <- generate_ratings_plot(all_episodes_df)
+        print(plot)
         
       } else if (average_seasons_ratings == "2") {
         season_rating_input <- as.numeric(readline("Which season do you want to visualize?"))
         season_rating_id <- trimws(seasons$id[season_rating_input])
         episodes_rating <- get_episodes_of_season(season_rating_id)
         episode_details <- format_episode_name(episodes_rating)
+        episode_details$Episode <- as.numeric(str_replace(episode_details$Episode, ".*E", ""))
         season_plot <- generate_season_ratings_plot(episode_details)
         print(season_plot)
       }
