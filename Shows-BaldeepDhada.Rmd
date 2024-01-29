@@ -15,3 +15,7 @@ Made an update to format_season_name to handle empty strings and replace it with
 # Jan 28, 2024:
 
 Created get_all_episodes, format_all_episodes, generate_season_ratings_plot functions for data analysis. Updated the main function to take in additional user input for analysis of a season or analysis of a show in general. 
+
+# Jan 29, 2024:
+
+Added comments to the main function and added documentation to some functions
