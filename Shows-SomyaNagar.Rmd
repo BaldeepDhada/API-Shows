@@ -11,4 +11,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Work Log
 
-## Jan 23, 2024
+## Jan 24, 2024
+
+Written code for get_all_episodes() method. This method makes an API call with a season_id parameter and retrieves the data for all the episodes in the season. The episode data from the API includes episode number, name and it's rating.
+
+I used the 'httr' library to make the API call and then stored the data as a parsed JSON object.
+
+## Jan 25, 2024
+
+Worked on writing the code for format_all_episodes(). This method inputs the parsed JSON response from the get_all_episodes() method and then creates a dataframe to properly display that data.
+
+I included the code to replace NA values inside the dataframe with '?' for better readability and user understanding.
+
+The following github commit reflects the work done for the two days : <https://github.com/BaldeepDhada/API-Shows/commit/58b0a69cb7dcd910fdc7b7a428570cb73860e9b3>
