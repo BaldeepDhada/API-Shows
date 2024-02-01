@@ -21,3 +21,16 @@ test_that("get_episodes_of_season returns correct JSON data", {
   result <- get_episodes_of_season(season_id)
   expect_is(result, "data.frame")
 })
+
+test_that("format_episode_name returns a dataframe with specific columns", {
+  mock_response = list(
+    name = "Lord Snow",
+    season = "1",
+    number = "1",
+    rating = "8.1"
+  )
+  result <- format_episode_name(mock_response)
+  expect_is(result, "data.frame")
+  expect_true("Episode" %in% names(result))
+  expect_true("Name" %in% names(result))
+  })
