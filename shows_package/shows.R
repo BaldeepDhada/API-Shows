@@ -7,7 +7,7 @@ library(tidyverse)
 library(dbplyr)
 
 BASE_URL = "https://api.tvmaze.com/"
-
+httr_mock(on = FALSE)
 #' get_shows
 #'
 #' @param query 
@@ -199,7 +199,6 @@ format_all_episodes <- function(all_episodes) {
 #' @examples generate_ratings_plot(all_episodes_df)
 generate_ratings_plot <- function(all_episodes_df) {
   all_episodes_df <- subset(all_episodes_df, !grepl("\\?", Rating))
-  print(all_episodes_df)
   all_episodes_df$Rating <- as.numeric(all_episodes_df$Rating)
   all_episodes_df$Season <- as.numeric(gsub("^S(\\d+)E.*", "\\1", all_episodes_df$Episode))
   season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
