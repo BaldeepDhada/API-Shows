@@ -14,12 +14,27 @@ stub_request('get', uri = 'https://api.tvmaze.com/seasons/1/episodes') %>%
   to_return(
     body = get_episodes_of_season_mock_json,
     headers = list('Content-Type' = 'application/json; charset=utf-8')
-  ) 
+  )
+
+stub_request('get', uri = 'https://api.tvmaze.com/seasons/2/episodes') %>%
+  wi_th(
+    headers = list('Accept' = 'application/json, text/xml, application/xml, */*')
+  ) %>%
+  to_return(
+    body = '[]',
+    headers = list('Content-Type' = 'application/json; charset=utf-8')
+  )
 
 test_that("get_episodes_of_season returns correct JSON data", {
   season_id <- 1
   result <- get_episodes_of_season(season_id)
   expect_is(result, "data.frame")
+})
+
+test_that("get_episodes_of_season returns empty JSON data", {
+  season_id <- 2
+  result <- get_episodes_of_season(season_id)
+  expect_equal(result, "There is no information for this season")
 })
 
 test_that("format_episode_name returns a dataframe with specific columns", {
