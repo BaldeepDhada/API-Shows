@@ -1,6 +1,6 @@
 library(testthat)
 library(webmockr)
-source("/Users/bobbydhada/mds/DATA-534/project/API-Shows/shows_package/shows.R")
+source("/Users/somyanagar/Desktop/Workspace/Projects/API-Shows/shows_package/shows.R")
 
 httr_mock(on = TRUE)
 
@@ -15,6 +15,15 @@ stub_request('get', uri = 'https://api.tvmaze.com/seasons/1/episodes') %>%
     body = get_episodes_of_season_mock_json,
     headers = list('Content-Type' = 'application/json; charset=utf-8')
   ) 
+
+stub_request('get', uri = 'https://api.tvmaze.com/seasons/2/episodes') %>%
+  wi_th(
+    headers = list('Accept' = 'application/json, text/xml, application/xml, */*')
+  ) %>%
+  to_return(
+    body = '[]',
+    headers = list('Content-Type' = 'application/json; charset=utf-8')
+  )
 
 test_that("get_episodes_of_season returns correct JSON data", {
   season_id <- 1
@@ -33,6 +42,12 @@ test_that("format_episode_name returns a dataframe with specific columns", {
   expect_is(result, "data.frame")
   expect_true("Episode" %in% names(result))
   expect_true("Name" %in% names(result))
+})
+
+test_that("get_episodes_of_season returns empty JSON data", {
+  season_id <- 2
+  result <- get_episodes_of_season(season_id)
+  expect_equal(result, "There is no information for this season")
 })
 
 # get seasons and format seasons name testing
@@ -155,4 +170,49 @@ test_that("format_all_episodes returns a dataframe with specific columns", {
   expect_true("Episode" %in% names(result))
   expect_true("Name" %in% names(result))
   expect_true("Rating" %in% names(result))
+})
+
+
+# get_shows and format_shows_name testing
+
+stub_request('get', uri = 'https://api.tvmaze.com/search/shows?q=girls') %>%
+  wi_th(
+    headers = list('Accept' = 'application/json, text/xml, application/xml, */*')
+  ) %>%
+  to_return(
+    body = get_shows_mock_json_data,
+    headers = list('Content-Type' = 'application/json; charset=utf-8')
+  )
+
+stub_request('get', uri = 'https://api.tvmaze.com/search/shows?q=test') %>%
+  wi_th(
+    headers = list('Accept' = 'application/json, text/xml, application/xml, */*')
+  ) %>%
+  to_return(
+    body = '[]',
+    headers = list('Content-Type' = 'application/json; charset=utf-8')
+  )
+
+test_that("get_shows returns correct JSON data", {
+  query <- 'girls'
+  result <- get_shows(query)
+  expect_is(result, "data.frame")
+})
+
+test_that("get_shows returns empty data", {
+  query <- 'test'
+  result <- get_shows(query)
+  expect_null(result)
+})
+
+test_that("format_show_name returns a dataframe with specific columns", {
+  mock_response = list(
+    name = "Girls",
+    premiered = "1",
+    ended = "1",
+    genres = "A, B"
+  )
+  result <- format_show_name(mock_response)
+  expect_is(result, "data.frame")
+  expect_true("name" %in% names(result))
 })
