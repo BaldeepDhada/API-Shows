@@ -248,8 +248,18 @@ main <- function(){
       print(details)
       
       # ask the user to select a specific show they want to view the seasons for
-      seasons_input <- readline("Select a Show Number (or 0 to exit): ")
-      if (seasons_input == "0") {
+      is_valid_input <- FALSE
+      seasons_input <- NULL
+      while (!is_valid_input) {
+        seasons_input <- readline("Select a Show Number (or 0 to exit): ")
+        if (grepl("^\\d+$", seasons_input) & as.numeric(seasons_input) >= 0 & as.numeric(seasons_input) <= nrow(details)) {
+          is_valid_input <- TRUE
+          break
+        } else {
+          cat("Please enter a valid input.\n")
+        }
+      }
+      if(seasons_input == "0") {
         break
       }
       index_seasons <- as.numeric(seasons_input)
@@ -261,7 +271,16 @@ main <- function(){
       print(season_names)
       
       # ask the user to select a specific season from the show and print all of the episodes in the season
-      season_number_input <- as.numeric(readline("Select a Season Number (or 0 to exit): "))
+      is_valid_input <- FALSE
+      while (!is_valid_input) {
+        season_number_input <- as.numeric(readline("Select a Season Number (or 0 to exit): "))
+        if (grepl("^\\d+$", season_number_input) & as.numeric(season_number_input) >= 0 & as.numeric(season_number_input) <= nrow(season_names)) {
+          is_valid_input <- TRUE
+          break
+        } else {
+          cat("Please enter a valid input.\n")
+        }
+      }
       if (season_number_input == "0") {
         break
       }
@@ -278,8 +297,16 @@ main <- function(){
       
       # generating plots
       cat("\n1. Plot of average rating per season for all the seasons in a show \n2. Plot of ratings for each episodes in a season")
-      average_seasons_ratings <- readline("Do you want to see any of the 2 visualizations? (or 0 to exit): ")
-      average_seasons_ratings
+      is_valid_input <- FALSE
+      while (!is_valid_input) {
+        average_seasons_ratings <- readline("Do you want to see any of the 2 visualizations? (or 0 to exit): ")
+        if (grepl("^\\d+$", average_seasons_ratings) & as.numeric(average_seasons_ratings) >= 0 & as.numeric(average_seasons_ratings) <= 2) {
+          is_valid_input <- TRUE
+          break
+        } else {
+          cat("Please enter a valid input.\n")
+        }
+      }
       if (average_seasons_ratings == "0") {
         break
         
@@ -292,7 +319,16 @@ main <- function(){
         
         # graph for the rating for each individual episode in a season 
       } else if (average_seasons_ratings == "2") {
-        season_rating_input <- as.numeric(readline("Which season do you want to visualize? "))
+        is_valid_input <- FALSE
+        while (!is_valid_input) {
+          season_rating_input <- as.numeric(readline("Which season do you want to visualize? "))
+          if (grepl("^\\d+$", season_rating_input) & as.numeric(season_rating_input) > 0 & as.numeric(season_rating_input) <= nrow(season_names)) {
+            is_valid_input <- TRUE
+            break
+          } else {
+            cat("Please enter a valid input.\n")
+          }
+        }
         season_rating_id <- trimws(seasons$id[season_rating_input])
         episodes_rating <- get_episodes_of_season(season_rating_id)
         if (is.character(episodes_rating)) {
