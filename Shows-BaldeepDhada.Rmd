@@ -19,3 +19,7 @@ Created get_all_episodes, format_all_episodes, generate_season_ratings_plot func
 # Jan 29, 2024:
 
 Added comments to the main function and added documentation to some functions
+
+# Feb 4, 2024:
+
+Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R
