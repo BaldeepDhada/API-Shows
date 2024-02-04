@@ -201,6 +201,13 @@ generate_ratings_plot <- function(all_episodes_df) {
   all_episodes_df <- subset(all_episodes_df, !grepl("\\?", Rating))
   all_episodes_df$Rating <- as.numeric(all_episodes_df$Rating)
   all_episodes_df$Season <- as.numeric(gsub("^S(\\d+)E.*", "\\1", all_episodes_df$Episode))
+  
+  # if ratings is all "?" then you return "There are no ratings for this show"
+  # if atleast one rating then make the plot
+  all_episodes_df <- all_episodes_df[all_episodes_df$Rating != "?",]
+  if (nrow(all_episodes_df) == 0) {
+    return("There are no ratings for this show")
+  }
   season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
   colnames(season_avg) <- c("Season", "Mean_Rating")
   base <- ggplot(season_avg, aes(x = Season, y = Mean_Rating))
@@ -219,6 +226,10 @@ generate_ratings_plot <- function(all_episodes_df) {
 #' @examples generate_season_ratings_plot(season_df)
 generate_season_ratings_plot <- function(season_df) {
   season_df$Rating <- as.numeric(season_df$Rating)
+  season_df <- season_df[complete.cases(season_df$Rating),]
+  if (nrow(season_df) == 0) {
+    return("There are no ratings for this show")
+  }
   season_plot <- ggplot(season_df, aes(x = Episode, y = Rating)) +
     geom_line() +
     geom_point() +
