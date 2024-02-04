@@ -22,4 +22,4 @@ Added comments to the main function and added documentation to some functions
 
 # Feb 4, 2024:
 
-Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R
+Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R. Fixed a bug in the plotting functions to return a string if there are no ratings available. 
