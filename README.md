@@ -1,4 +1,4 @@
-# TVmaze API
+# TVmaze API Wrapper
 
 This an interactive application which uses TVmaze's REST API to enable users to access television data held within the TVMaze database. Specifically, the application prompts users to:
 
