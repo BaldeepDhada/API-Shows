@@ -7,7 +7,7 @@ library(tidyverse)
 library(dbplyr)
 
 BASE_URL = "https://api.tvmaze.com/"
-httr_mock(on = FALSE)
+#httr_mock(on = FALSE)
 #' get_shows
 #'
 #' @param query 
@@ -211,7 +211,10 @@ generate_ratings_plot <- function(all_episodes_df) {
   season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
   colnames(season_avg) <- c("Season", "Mean_Rating")
   base <- ggplot(season_avg, aes(x = Season, y = Mean_Rating))
-  plot <- base + geom_point() + geom_line() + labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Average Ratings by Season")
+  plot <- base + geom_point() + geom_line(color = 'blue') + labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Ratings of Each Season") + 
+    theme(plot.title = element_text(hjust = 0.5, size = 20),
+          axis.title.x = element_text(size = 14),
+          axis.title.y = element_text(size = 14))
   
   return(plot)
 }
@@ -231,11 +234,13 @@ generate_season_ratings_plot <- function(season_df) {
     return("There are no ratings for this show")
   }
   season_plot <- ggplot(season_df, aes(x = Episode, y = Rating)) +
-    geom_line() +
+    geom_line(color = 'orange') +
     geom_point() +
-    labs(title = "Episodes Ratings",
+    labs(title = "Ratings of Each Episode",
          x = "Season Episodes",
-         y = "Ratings")
+         y = "Ratings") + theme(plot.title = element_text(hjust = 0.5, size = 20),
+                                axis.title.x = element_text(size = 14),
+                                axis.title.y = element_text(size = 14))
   
   return(season_plot)
   
