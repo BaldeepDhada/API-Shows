@@ -1,5 +1,5 @@
-# TVmaze API Wrapper
-[![R](https://github.com/BaldeepDhada/API-Shows/actions/workflows/r.yml/badge.svg)](https://github.com/BaldeepDhada/API-Shows/actions/workflows/r.yml) <br>
+# TVmaze API Wrapper [![R](https://github.com/BaldeepDhada/API-Shows/actions/workflows/r.yml/badge.svg)](https://github.com/BaldeepDhada/API-Shows/actions/workflows/r.yml) <br>
+
 This an interactive application which uses TVmaze's REST API to enable users to access television data held within the TVMaze database. Specifically, the application prompts users to:
 
 1. Enter a television show
