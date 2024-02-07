@@ -32,7 +32,7 @@ jobs:
       run: pwd
     - name: Set up package
       run: |
-        R -e "install.packages(c('testthat', 'devtools', 'webmockr', 'httr', 'jsonlite', 'glue', 'ggplot2', 'dbplyr', 'roxygen2', 'tidyverse'), repos='https://cloud.r-project.org/')"
+        R -e "install.packages(c('testthat', 'tidyverse', 'devtools', 'webmockr', 'httr', 'jsonlite', 'glue', 'ggplot2', 'dbplyr', 'roxygen2'), repos='https://cloud.r-project.org/')"
     - name: Print Library Path
       run: R -e ".libPaths()"
     - name: List Contents of Library Directory
