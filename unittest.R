@@ -1,6 +1,6 @@
 library(testthat)
 library(webmockr)
-source("/Users/somyanagar/Desktop/Workspace/Projects/API-Shows/shows_package/shows.R")
+source("shows_package/shows.R")
 
 httr_mock(on = TRUE)
 
