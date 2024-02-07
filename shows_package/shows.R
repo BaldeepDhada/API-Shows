@@ -358,5 +358,3 @@ main <- function(){
     }
   }
 }
-
-main()
