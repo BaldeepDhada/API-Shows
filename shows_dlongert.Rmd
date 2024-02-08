@@ -2,3 +2,5 @@
 - January 24, 2024: I created a get_shows(), format_show_name(), and main() functions
 - January 25, 2024: I created documentation using Roxygen2 the the functions I created above; I combined my functions above with the functions my other teammates made
 - January 30, 2024: I created a unittest file to test all the functions in our package
+- February 2, 2024: I wrote the README.md documentation for the TVMaze API wrapper application
+- February 5, 2025: In the presentation slides, I created powerpoint slides for the application description, functionality, and the API call functions
