@@ -6,15 +6,15 @@ date: "2024-01-24"
 
 # Jan 24, 2024:
 
-Created the get_seasons(), format_season_name() functions, and updated the main function to handle a show input that doesn't exist in the API. Instead of printing the results as they are, I decided to print the results as a data frame and requested my team members to also make any future results as a data frame. 
+Created the get_seasons(), format_season_name() functions, and updated the main function to handle a show input that doesn't exist in the API. Instead of printing the results as they are, I decided to print the results as a data frame and requested my team members to also make any future results as a dataframe.
 
 # Jan 25, 2024:
 
-Made an update to format_season_name to handle empty strings and replace it with ?. Updated the main function to make the output more clean. Added a while loop so the user can keep using the program, added breaks within it to exit the program at any level. Added documentation for format_season_name and get_seasons. 
+Made an update to format_season_name to handle empty strings and replace it with ?. Updated the main function to make the output more clean. Added a while loop so the user can keep using the program, added breaks within it to exit the program at any level. Added documentation for format_season_name and get_seasons.
 
 # Jan 28, 2024:
 
-Created get_all_episodes, format_all_episodes, generate_season_ratings_plot functions for data analysis. Updated the main function to take in additional user input for analysis of a season or analysis of a show in general. 
+Created get_all_episodes, format_all_episodes, generate_season_ratings_plot functions for data analysis. Updated the main function to take in additional user input for analysis of a season or analysis of a show in general.
 
 # Jan 29, 2024:
 
@@ -22,4 +22,4 @@ Added comments to the main function and added documentation to some functions
 
 # Feb 4, 2024:
 
-Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R. Fixed a bug in the plotting functions to return a string if there are no ratings available. 
+Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R. Fixed a bug in the plotting functions to return a string if there are no ratings available.
