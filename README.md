@@ -39,4 +39,4 @@ This application utilizes 10 functions to handle the user work flow:
 10. **generate_season_ratings_plot()**
     - This function utilizes the data generated from the **format_all_episodes()** function to produce a visualization of a television shows average rating per episode plotted over episode.
 
-One run of this application requires 4 API calls to be made and the free version of the TVMaze API can be called a maximum of 20 times per minute. As such, this application should only be run a maximum of 5 times per minute.
+One run of this application requires 4 API calls to be made and the free version of the TVMaze API can be called a maximum of 20 times per 10 seconds. As such, this application should be run a maximum of 30 times per minute.
