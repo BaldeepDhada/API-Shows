@@ -12,14 +12,20 @@ BASE_URL = "https://api.tvmaze.com/"
 #' @param query
 #'
 #' @return a dataframe containing all information on a given television show
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples get_shows("Hello Kitty")
 get_shows <- function(query){
   query = paste0(BASE_URL, "search/shows?q=", URLencode(query))
-  response = GET(query)
-  json_content = content(response, "text", encoding = "UTF-8")
-  parse_json = fromJSON(json_content)$show
+  response = httr::GET(query)
+  json_content = httr::content(response, "text", encoding = "UTF-8")
+  parse_json = jsonlite::fromJSON(json_content)$show
   ifelse(length(parse_json) == 0, return (NULL), return (parse_json))
 }
 
@@ -29,6 +35,12 @@ get_shows <- function(query){
 #'
 #' @return a dataframe of the shows returned in the get_shows() function, along
 #' with premier date, end date, and the genres
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples format_show_name(get_shows("Hello Kitty"))
@@ -63,15 +75,21 @@ format_show_name <- function(show){
 #' @param show_id
 #'
 #' @return parsed json file containing information about the seasons
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples get_seasons(1505)
 get_seasons <- function(show_id){
 
   link <- paste0(BASE_URL, "shows/", as.character(show_id), "/seasons")
-  response <- GET(link)
-  json_content <- content(response, "text", encoding = "UTF-8")
-  parsed_json <- fromJSON(json_content)
+  response <- httr::GET(link)
+  json_content <- httr::content(response, "text", encoding = "UTF-8")
+  parsed_json <- jsonlite::fromJSON(json_content)
   parsed_json <- data.frame(apply(parsed_json, c(1, 2), function(x) ifelse(is.na(x) | x == " ", "?", x)))
   return(parsed_json)
 
@@ -82,14 +100,20 @@ get_seasons <- function(show_id){
 #' @param season
 #'
 #' @return a data frame that has been cleaned of NA values
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples format_season_name(season)
 format_season_name <- function(season){
 
   # making the data frame
-  formatted_seasons <- data.frame(Season = glue("Season {season$number}"), Name = season$name, Premier = glue("{substr(season$premiereDate, 1, 4)}"),
-                                  End = glue("{substr(season$endDate, 1, 4)}"), Episodes = season$episodeOrder)
+  formatted_seasons <- data.frame(Season = glue::glue("Season {season$number}"), Name = season$name, Premier = glue::glue("{substr(season$premiereDate, 1, 4)}"),
+                                  End = glue::glue("{substr(season$endDate, 1, 4)}"), Episodes = season$episodeOrder)
 
   # replacing NA values with ? to account for missing information in the API
   formatted_seasons[is.na(formatted_seasons) | formatted_seasons == ""] <- "?"
@@ -101,18 +125,24 @@ format_season_name <- function(season){
 #' @param season_id
 #'
 #' @return a data frame of the parsed json
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples get_episodes_of_season(season_id)
 get_episodes_of_season <- function(season_id) {
   link <- paste0(BASE_URL, "seasons/", as.character(season_id), "/episodes")
-  response <- GET(link)
-  json_content <- content(response, "text", encoding = "UTF-8")
+  response <- httr::GET(link)
+  json_content <- httr::content(response, "text", encoding = "UTF-8")
 
   if (json_content == "[]") {
     return("There is no information for this season")
   } else {
-    parsed_json <- fromJSON(json_content)
+    parsed_json <- jsonlite::fromJSON(json_content)
     return(parsed_json)
   }
 }
@@ -122,6 +152,12 @@ get_episodes_of_season <- function(season_id) {
 #' @param episode
 #'
 #' @return a data frame that has been cleaned of NA values
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples
@@ -143,6 +179,12 @@ format_episode_name <- function(episode) {
 #' @param x
 #'
 #' @return ? if x was NA
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples replace_na(x)
@@ -156,14 +198,20 @@ replace_na <- function(x) {
 #' @param show_id
 #'
 #' @return a data frame of the parsed json of the get response
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples get_all_episodes(show_id)
 get_all_episodes <- function(show_id) {
   link <- paste0(BASE_URL, "shows/", as.character(show_id), "/episodes")
-  response <- GET(link)
-  json_content <- content(response, "text", encoding = "UTF-8")
-  parsed_json <- fromJSON(json_content)
+  response <- httr::GET(link)
+  json_content <- httr::content(response, "text", encoding = "UTF-8")
+  parsed_json <- jsonlite::fromJSON(json_content)
   return(parsed_json)
 }
 
@@ -172,6 +220,12 @@ get_all_episodes <- function(show_id) {
 #' @param all_episodes
 #'
 #' @return a data frame that has been cleaned cleaned and filtered of missing values
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples format_all_episodes(all_episodes)
@@ -193,6 +247,12 @@ format_all_episodes <- function(all_episodes) {
 #' @param all_episodes_df
 #'
 #' @return a line plot representing the average rating across the seasons of the show
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples generate_ratings_plot(all_episodes_df)
@@ -209,8 +269,8 @@ generate_ratings_plot <- function(all_episodes_df) {
   }
   season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
   colnames(season_avg) <- c("Season", "Mean_Rating")
-  base <- ggplot(season_avg, aes(x = Season, y = Mean_Rating))
-  plot <- base + geom_point() + geom_line(color = 'blue') + labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Ratings of Each Season") +
+  base <- ggplot2::ggplot(season_avg, ggplot2::aes(x = Season, y = Mean_Rating))
+  plot <- base + ggplot2::geom_point() + ggplot2::geom_line(color = 'blue') + ggplot2::labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Ratings of Each Season") +
     theme(plot.title = element_text(hjust = 0.5, size = 20),
           axis.title.x = element_text(size = 14),
           axis.title.y = element_text(size = 14))
@@ -223,6 +283,12 @@ generate_ratings_plot <- function(all_episodes_df) {
 #' @param season_df
 #'
 #' @return a plot of the rating for each episode in a given season
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
 #' @export
 #'
 #' @examples generate_season_ratings_plot(season_df)
@@ -232,7 +298,7 @@ generate_season_ratings_plot <- function(season_df) {
   if (nrow(season_df) == 0) {
     return("There are no ratings for this show")
   }
-  season_plot <- ggplot(season_df, aes(x = Episode, y = Rating)) +
+  season_plot <- ggplot2::ggplot(season_df, ggplot2::aes(x = Episode, y = Rating)) +
     geom_line(color = 'orange') +
     geom_point() +
     labs(title = "Ratings of Each Episode",
@@ -245,6 +311,18 @@ generate_season_ratings_plot <- function(season_df) {
 
 }
 
+#' main
+#'
+#'
+#' @import httr
+#' @import jsonlite
+#' @import glue
+#' @import roxygen2
+#' @import ggplot2
+#' @import dbplyr
+#' @export
+#'
+#' @examples main()
 main <- function(){
   exit <- FALSE
   while (exit == FALSE) {
