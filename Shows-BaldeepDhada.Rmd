@@ -23,3 +23,11 @@ Added comments to the main function and added documentation to some functions
 # Feb 4, 2024:
 
 Created unit tests for get_seasons, format_seasons_name, get all_episodes and format_all_episodes and updated the main function in shows.R. Fixed a bug in the plotting functions to return a string if there are no ratings available.
+
+# Feb 5, 2024:
+
+Updated the code for the graphs. Centered the main title and increased its font size, increased font size for the axis labels and added different colors for the line plots.
+
+# Feb 8, 2024:
+
+Added the license and updated the Read me to fix an issue with the description of the API. Updated email address associated with Git on my local machine to match the one on Github because it wasn't showing the proper number of commits from my side. Pushed the main package.
