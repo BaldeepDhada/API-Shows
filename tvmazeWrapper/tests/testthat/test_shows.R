@@ -1,6 +1,5 @@
 library(testthat)
 library(webmockr)
-library(covr)
 
 source("/Users/somyanagar/Desktop/tvmazeWrapper/R/shows.R")
 
