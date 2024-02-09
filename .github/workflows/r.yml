@@ -40,4 +40,4 @@ jobs:
     - name: Print Installed Packages
       run: R -e "installed.packages()"
     - name: Run tests
-      run: Rscript unittest.R
+      run: Rscript tvmazeWrapper/tests/testthat/test_shows.R
