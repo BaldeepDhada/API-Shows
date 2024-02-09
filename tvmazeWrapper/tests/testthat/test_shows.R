@@ -1,7 +1,7 @@
 library(testthat)
 library(webmockr)
 
-source("/Users/somyanagar/Desktop/tvmazeWrapper/R/shows.R")
+source("tvmazeWrapper/R/shows.R")
 
 httr_mock(on = TRUE)
 
