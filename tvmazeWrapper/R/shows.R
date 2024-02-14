@@ -270,10 +270,10 @@ generate_ratings_plot <- function(all_episodes_df) {
   season_avg <- aggregate(all_episodes_df$Rating, by = list(all_episodes_df$Season), FUN = mean)
   colnames(season_avg) <- c("Season", "Mean_Rating")
   base <- ggplot2::ggplot(season_avg, ggplot2::aes(x = Season, y = Mean_Rating))
-  plot <- base + ggplot2::geom_point() + ggplot2::geom_line(color = 'blue') + ggplot2::labs(x = "Season", y = "Mean Rating") + ggtitle("Mean Ratings of Each Season") +
-    theme(plot.title = element_text(hjust = 0.5, size = 20),
-          axis.title.x = element_text(size = 14),
-          axis.title.y = element_text(size = 14))
+  plot <- base + ggplot2::geom_point() + ggplot2::geom_line(color = 'blue') + ggplot2::labs(x = "Season", y = "Mean Rating") + ggplot2::ggtitle("Mean Ratings of Each Season") +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 20),
+          axis.title.x = ggplot2::element_text(size = 14),
+          axis.title.y = ggplot2::element_text(size = 14))
 
   return(plot)
 }
@@ -293,19 +293,20 @@ generate_ratings_plot <- function(all_episodes_df) {
 #'
 #' @examples generate_season_ratings_plot(season_df)
 generate_season_ratings_plot <- function(season_df) {
+  season_df$Episode <- as.numeric(gsub(".*E", "", season_df$Episode))
   season_df$Rating <- as.numeric(season_df$Rating)
   season_df <- season_df[complete.cases(season_df$Rating),]
   if (nrow(season_df) == 0) {
     return("There are no ratings for this show")
   }
   season_plot <- ggplot2::ggplot(season_df, ggplot2::aes(x = Episode, y = Rating)) +
-    geom_line(color = 'orange') +
-    geom_point() +
-    labs(title = "Ratings of Each Episode",
+    ggplot2::geom_line(color = 'orange') +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "Ratings of Each Episode",
          x = "Season Episodes",
-         y = "Ratings") + theme(plot.title = element_text(hjust = 0.5, size = 20),
-                                axis.title.x = element_text(size = 14),
-                                axis.title.y = element_text(size = 14))
+         y = "Ratings") + ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 20),
+                                axis.title.x = ggplot2::element_text(size = 14),
+                                axis.title.y = ggplot2::element_text(size = 14))
 
   return(season_plot)
 
@@ -428,7 +429,6 @@ main <- function(){
           cat(episodes_rating)
         } else {
           episode_details <- format_episode_name(episodes_rating)
-          episode_details$Episode <- as.numeric(gsub(".*E", "", episode_details$Episode))
           season_plot <- generate_season_ratings_plot(episode_details)
           print(season_plot)
         }

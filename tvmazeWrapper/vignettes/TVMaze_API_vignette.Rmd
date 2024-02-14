@@ -1,0 +1,153 @@
+---
+title: "TVMaze API Vignette"
+author: "Baldeep Dhada, Dylan Longert, Somya Nagar"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TVMaze API Vignette}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Load tvmazeWrapper Package
+
+```{r}
+library(tvmazeWrapper)
+```
+
+### Using Fuctions
+
+**get_shows():** An API call is made to the TVmaze database with the
+television show the user inputed as a parameter. The function returns a
+dataframe of all television shows similar to what the user inputed, as
+well as all associated data found within the database. NULL is returned
+if the television show is not found within the database.
+
+**example:**
+
+```{r}
+shows <- get_shows("Game of Thrones")
+head(shows, 1)
+```
+
+**format_show_name():** This function formats the dataframe returned in
+the get_shows() function, returning only the television show name,
+premier date, end date, and genres.
+
+**example:**
+
+```{r}
+format_show_name(shows)
+```
+
+**get_seasons():** second API call is made to the TVmaze database with
+television show id as a parameter. This function returns a dataframe of
+all available data pertaining to a specific television show.
+
+**example:**
+
+```{r}
+# 82 is the television show id parameter for Game of Thrones
+seasons_df <- get_seasons(82)
+head(seasons_df, 1)
+```
+
+**format_season_name():** This function formats the dataframe returned
+in the get_seasons() function, returning only season numbers, season
+names, premier dates, end dates, and number of episodes.
+
+**example:**
+
+```{r}
+# seasons_df is the dataframe with seasons data
+seasons <- format_season_name(seasons_df)
+head(seasons)
+```
+
+**get_episodes_of_season():** A third API call is made to the TVMaze
+database with season id as a parameter. This function returns a
+dataframe of all available data pertaining to the season of a television
+show.
+
+```{r}
+# 307 is the season id for season 1 of Game of Thrones
+episodes_df <- get_episodes_of_season(307)
+head(episodes_df, 1)
+```
+
+**format_episode_name():** This function formats the dataframe returned
+in the get_episodes_of_season() function, returning only episode
+numbers, episode names, and episode ratings.
+
+```{r}
+episodes <- format_episode_name(episodes_df)
+head(episodes)
+```
+
+**get_all_episodes():** A fourth API call is made to the TVMaze database
+with television show id as a parameter. This function returns a
+dataframe of all available television show episode data.
+
+```{r}
+# 82 is the television show id parameter for Game of Thrones
+all_episodes_df <- get_all_episodes(82)
+head(all_episodes_df, 1)
+```
+
+**format_all_episodes():** This function formats the dataframe returned
+in the get_all_episodes() function, returning only episode numbers,
+episode names, and episode ratings.
+
+```{r}
+all_episodes <- format_all_episodes(all_episodes_df)
+head(all_episodes)
+```
+
+**generate_ratings_plot():** This function utilizes the data generated
+from the format_episode_name() function to produce a visualization of a
+television shows average rating per season plotted over season.
+
+```{r fig.width=8, fig.height=5}
+generate_ratings_plot(all_episodes)
+```
+
+**generate_season_ratings_plot():** This function utilizes the data
+generated from the format_all_episodes() function to produce a
+visualization of a television shows average rating per episode plotted
+over episode.
+
+```{r fig.width=8, fig.height=5}
+generate_season_ratings_plot(episodes)
+```
+
+All of the functionality explained above can be accessed with the
+`main()` function. It allows the user with an interactive experience to
+navigate the entire workflow. The usage for that demonstrated below :
+
+**main() :**
+
+``` R
+main()
+
+Enter a Show (or 0 to exit): Game of thrones
+
+Select a Show Number (or 0 to exit): 1
+
+Select a Season Number (or 0 to exit): 1
+
+1. Plot of average rating per season for all the seasons in a show 
+2. Plot of ratings for each episodes in a season
+Do you want to see any of the 2 visualizations? (or 0 to exit): 1
+
+Enter a Show (or 0 to exit): 0
+```
